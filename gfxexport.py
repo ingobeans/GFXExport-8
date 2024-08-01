@@ -35,11 +35,10 @@ from __future__ import division, absolute_import, print_function,\
 
 __version__ = '1.0.0'
 
+from PIL import Image
 import argparse
 import sys
 import os
-
-import png
 
 # PICO-8 palette, rgb
 PALETTE = [(0, 0, 0),           # 0 Black
@@ -146,9 +145,20 @@ with open(path, 'r') as rf:
 
             pixels.append(pxline)
 
-    writer = png.Writer(len(pixels[0]), len(pixels), palette=PALETTE)
-
-    with open(args.output, 'wb') as wf:
-        writer.write(wf, pixels)
+    height = len(pixels)
+    width = len(pixels[0])
+    
+    # Create a new PIL image
+    image = Image.new("RGB", (width, height))
+    
+    # Write to image from array
+    for y in range(height):
+        for x in range(width):
+            index = pixels[y][x]
+            color = PALETTE[index]
+            image.putpixel((x, y), color)
+    
+    # Save the image as a PNG file
+    image.save(args.output)
 
 print('Done')
