@@ -12,7 +12,7 @@ This script should support Windows, Linux and Mac (not tested)
 
 You will need Python (any recent version, 2 or 3, should be fine). It is preinstalled under Mac and Linux. For Windows, download it [on python.org](https://www.python.org/downloads/).
 
-Simply [download the archive](https://github.com/FrozenTux/GFXExport-8/archive/master.zip) or clone the repo, and extract `gfxextract.py` AND `png.py` into a folder easily accessible by command line.
+Simply [download the archive](https://github.com/FrozenTux/GFXExport-8/archive/master.zip) or clone the repo, and extract `gfxextract.py` into a folder easily accessible by command line.
 
 ## Usage
 

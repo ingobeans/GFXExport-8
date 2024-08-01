@@ -151,6 +151,10 @@ with open(path, 'r') as rf:
 
         pixels.append(pxline)
     
+    if args.upscale != 1:
+        size = (image.width * args.upscale, image.height * args.upscale)
+        image = image.resize(size, Image.NEAREST)
+    
     image.save(args.output)
 
 print('Done')
