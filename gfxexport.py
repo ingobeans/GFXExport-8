@@ -130,6 +130,8 @@ with open(path, 'r') as rf:
     while True:
         # Read lines until the next block
         line = rf.readline().strip()
+        if not line:
+            break
         if line.startswith('__'):
             break
 
@@ -144,9 +146,9 @@ with open(path, 'r') as rf:
                     pxline.append(idx)
 
             pixels.append(pxline)
-
+        
     height = len(pixels)
-    width = len(pixels[0])
+    width =  128
     
     # Create a new PIL image
     image = Image.new("RGB", (width, height))
