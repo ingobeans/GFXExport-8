@@ -119,48 +119,38 @@ print('Extracting GFX from {0} into {1}...'.format(path, args.output))
 
 # Begin the actual extraction
 with open(path, 'r') as rf:
-    skip = True
-    # Skip lines until the gfx block
-    while skip:
-        line = rf.readline()
-        if line.startswith('__gfx__'):
-            skip = False
+    cart = rf.read()
 
-    pixels = []
-    while True:
-        # Read lines until the next block
-        line = rf.readline().strip()
-        if not line:
-            break
-        if line.startswith('__'):
-            break
+    # Remove everything before gfx section
+    gfx = cart.split("__gfx__\n")[1]
 
-        # Repeat lines to upscale
-        for i in range(args.upscale):
-            pxline = []
-            for char in line:
-                # Convert from hex to integer
-                idx = int(char, 16)
-                # Repeat pixels to upscale
-                for j in range(args.upscale):
-                    pxline.append(idx)
-
-            pixels.append(pxline)
-        
-    height = len(pixels)
+    # If section after gfx, remove it
+    if "\n__" in gfx:
+        gfx = gfx.split("\n__")[0]
+    
+    lines = gfx.strip().split("\n")
+    
+    height = len(lines)
     width =  128
     
     # Create a new PIL image
     image = Image.new("RGB", (width, height))
     
-    # Write to image from array
-    for y in range(height):
-        for x in range(width):
-            index = pixels[y][x]
-            color = PALETTE[index]
+    pixels = []
+    for y, line in enumerate(lines):
+        if line.startswith('__'):
+            break
+
+        pxline = []
+        for x, char in enumerate(line):
+            # Convert from hex to integer
+            idx = int(char, 16)
+            pxline.append(idx)
+            color = PALETTE[idx]
             image.putpixel((x, y), color)
+
+        pixels.append(pxline)
     
-    # Save the image as a PNG file
     image.save(args.output)
 
 print('Done')
